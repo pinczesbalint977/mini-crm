@@ -70,6 +70,16 @@
   border-color: var(--primary);
 }
 
+.field input[aria-invalid="true"],
+.field textarea[aria-invalid="true"] {
+  border-color: var(--danger);
+}
+
+.field-error {
+  color: var(--danger);
+  font-size: 0.8rem;
+}
+
 .btn {
   border: 0;
   border-radius: var(--radius-sm);
