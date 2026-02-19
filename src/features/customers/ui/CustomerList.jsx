@@ -1,4 +1,4 @@
-function formatCreatedAt(createdAt) {
+﻿function formatCreatedAt(createdAt) {
   if (!createdAt?.toDate) {
     return "most";
   }
@@ -13,7 +13,7 @@ export function CustomerList({
   customers,
   isLoading,
   error,
-  emptyMessage = "Meg nincs rogzitett ugyfel.",
+  emptyMessage = "Még nincs rögzített ügyfél.",
 }) {
   if (isLoading) {
     return <p className="status">Betöltés...</p>;

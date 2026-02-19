@@ -1,4 +1,4 @@
-import { CustomersPage } from "../features/customers/pages/CustomersPage";
+﻿import { CustomersPage } from "../features/customers/pages/CustomersPage";
 
 export function App() {
   return (

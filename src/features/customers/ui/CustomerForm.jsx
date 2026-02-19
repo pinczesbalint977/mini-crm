@@ -1,45 +1,7 @@
-import { useMemo, useState } from "react";
-import { createCustomer } from "../api/customersApi";
+﻿import { useMemo, useState } from "react";
+import { createCustomer } from "../data/customersApi";
+import { validateCustomerForm, validateField } from "../logic/customerValidation";
 import { emptyCustomerForm } from "../model/emptyCustomerForm";
-
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-const PHONE_REGEX = /^\+?[0-9\s()+-]{7,20}$/;
-
-function validateField(name, value) {
-  const trimmedValue = value.trim();
-
-  if (!trimmedValue) {
-    return "Kötelező mező.";
-  }
-
-  if (name === "name" && trimmedValue.length < 2) {
-    return "A név legalább 2 karakter legyen.";
-  }
-
-  if (name === "email" && !EMAIL_REGEX.test(trimmedValue)) {
-    return "Érvenytelen e-mail formátum.";
-  }
-
-  if (name === "phone" && !PHONE_REGEX.test(trimmedValue)) {
-    return "Érvenytelen telefonszám formátum.";
-  }
-
-  return "";
-}
-
-function validateForm(formData) {
-  const fieldsToValidate = ["name", "email", "phone", "notes"];
-
-  return fieldsToValidate.reduce((errors, fieldName) => {
-    const errorMessage = validateField(fieldName, formData[fieldName] || "");
-
-    if (errorMessage) {
-      errors[fieldName] = errorMessage;
-    }
-
-    return errors;
-  }, {});
-}
 
 export function CustomerForm({ onCreated }) {
   const [formData, setFormData] = useState(emptyCustomerForm);
@@ -71,7 +33,7 @@ export function CustomerForm({ onCreated }) {
     event.preventDefault();
     setFormError("");
 
-    const nextFieldErrors = validateForm(formData);
+    const nextFieldErrors = validateCustomerForm(formData);
     setFieldErrors(nextFieldErrors);
 
     if (Object.keys(nextFieldErrors).length > 0) {
@@ -92,7 +54,7 @@ export function CustomerForm({ onCreated }) {
           ...prev,
           email: "Ez az e-mail már szerepel az adatbázisban.",
         }));
-        setFormError("Ezzel az e-mail címmel már létezik ügyfel.");
+        setFormError("Ezzel az e-mail címmel már létezik ügyfél.");
       } else {
         setFormError("Sikertelen mentés. Ellenőrizd a Firebase beállításokat.");
       }
@@ -168,9 +130,8 @@ export function CustomerForm({ onCreated }) {
       {formError ? <p className="status status-error">{formError}</p> : null}
 
       <button className="btn btn-primary" type="submit" disabled={isSubmitDisabled}>
-        {isSaving ? "Mentés folyamatban..." : "Ügyfel mentése"}
+        {isSaving ? "Mentés folyamatban..." : "Ügyfél mentése"}
       </button>
     </form>
   );
 }
-

@@ -1,36 +1,18 @@
-import { useMemo, useState } from "react";
-import { CustomerForm } from "../components/CustomerForm";
-import { CustomerList } from "../components/CustomerList";
-import { useCustomers } from "../hooks/useCustomers";
+﻿import { useMemo, useState } from "react";
+import { CustomerForm } from "../ui/CustomerForm";
+import { CustomerList } from "../ui/CustomerList";
+import { filterCustomers, getCustomerListEmptyMessage } from "../logic/customerSearch";
+import { useCustomers } from "../logic/useCustomers";
 
 export function CustomersPage() {
   const { customers, isLoading, error, markRefreshing } = useCustomers();
   const [searchTerm, setSearchTerm] = useState("");
 
-  const normalizedSearchTerm = searchTerm.trim().toLowerCase();
-
   const filteredCustomers = useMemo(() => {
-    if (!normalizedSearchTerm) {
-      return customers;
-    }
+    return filterCustomers(customers, searchTerm);
+  }, [customers, searchTerm]);
 
-    return customers.filter((customer) => {
-      const searchableFields = [
-        customer.name,
-        customer.email,
-        customer.phone,
-        customer.notes,
-      ];
-
-      return searchableFields.some((field) =>
-        String(field || "").toLowerCase().includes(normalizedSearchTerm)
-      );
-    });
-  }, [customers, normalizedSearchTerm]);
-
-  const emptyMessage = normalizedSearchTerm
-    ? "Nincs talalát a keresési feltételre."
-    : "Még nincs rögzített ügyfél.";
+  const emptyMessage = getCustomerListEmptyMessage(searchTerm);
 
   return (
     <section className="stack-lg">

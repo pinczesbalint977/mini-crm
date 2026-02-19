@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { subscribeCustomers } from "../api/customersApi";
+ï»¿import { useEffect, useState } from "react";
+import { subscribeCustomers } from "../data/customersApi";
 
 export function useCustomers() {
   const [customers, setCustomers] = useState([]);
@@ -14,7 +14,7 @@ export function useCustomers() {
         setError("");
       },
       onError: (fetchError) => {
-        setError("Nem sikerült betölteni az ügyfeleket.");
+        setError(fetchError?.message || "Nem sikerÃ¼lt betÃ¶lteni az Ã¼gyfeleket.");
         setIsLoading(false);
         console.error(fetchError);
       },
