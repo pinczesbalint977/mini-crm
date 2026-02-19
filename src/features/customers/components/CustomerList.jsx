@@ -9,7 +9,12 @@ function formatCreatedAt(createdAt) {
   }).format(createdAt.toDate());
 }
 
-export function CustomerList({ customers, isLoading, error }) {
+export function CustomerList({
+  customers,
+  isLoading,
+  error,
+  emptyMessage = "Meg nincs rogzitett ugyfel.",
+}) {
   if (isLoading) {
     return <p className="status">Betöltés...</p>;
   }
@@ -19,7 +24,7 @@ export function CustomerList({ customers, isLoading, error }) {
   }
 
   if (customers.length === 0) {
-    return <p className="status">Még nincs rögzített ügyfél.</p>;
+    return <p className="status">{emptyMessage}</p>;
   }
 
   return (
